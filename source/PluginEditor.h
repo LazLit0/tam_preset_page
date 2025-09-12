@@ -1,25 +1,22 @@
 #pragma once
 
+#include "Gui/PresetPanel.h"
 #include "PluginProcessor.h"
-#include "BinaryData.h"
-#include "melatonin_inspector/melatonin_inspector.h"
 
-//==============================================================================
-class PluginEditor : public juce::AudioProcessorEditor
+class JucePresetManagerAudioProcessorEditor : public juce::AudioProcessorEditor
 {
 public:
-    explicit PluginEditor (PluginProcessor&);
-    ~PluginEditor() override;
+    JucePresetManagerAudioProcessorEditor (JucePresetManagerAudioProcessor&);
+    ~JucePresetManagerAudioProcessorEditor() override;
 
-    //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
 
 private:
-    // This reference is provided as a quick way for your editor to
-    // access the processor object that created it.
-    PluginProcessor& processorRef;
-    std::unique_ptr<melatonin::Inspector> inspector;
-    juce::TextButton inspectButton { "Inspect the UI" };
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginEditor)
+    juce::GenericAudioProcessorEditor genericAudioProcessorEditor;
+    Gui::PresetPanel presetPanel;
+
+    JucePresetManagerAudioProcessor& audioProcessor;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JucePresetManagerAudioProcessorEditor)
 };

@@ -9,6 +9,7 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 **/.DS_Store
+._*
 
 # It's nice to have the Builds folder exist, to remind us where it is
 Builds/*
@@ -28,3 +29,7 @@ cmake-build-debug
 cmake-build-release
 cmake-build-relwithdebinfo
 packaging/Output/*
+/.cache/
+/.cmake/
+/build/
+/juce_binarydata_Assets/

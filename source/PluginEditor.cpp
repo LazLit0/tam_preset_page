@@ -1,48 +1,31 @@
+#include "PluginProcessor.h"
 #include "PluginEditor.h"
 
-PluginEditor::PluginEditor (PluginProcessor& p)
-    : AudioProcessorEditor (&p), processorRef (p)
+JucePresetManagerAudioProcessorEditor::JucePresetManagerAudioProcessorEditor (JucePresetManagerAudioProcessor& p) :
+	AudioProcessorEditor(&p),
+	genericAudioProcessorEditor(p),
+	presetPanel(p.getPresetManager()),
+    audioProcessor(p)
 {
-    juce::ignoreUnused (processorRef);
+    addAndMakeVisible(genericAudioProcessorEditor);
+    addAndMakeVisible(presetPanel);
 
-    addAndMakeVisible (inspectButton);
-
-    // this chunk of code instantiates and opens the melatonin inspector
-    inspectButton.onClick = [&] {
-        if (!inspector)
-        {
-            inspector = std::make_unique<melatonin::Inspector> (*this);
-            inspector->onClose = [this]() { inspector.reset(); };
-        }
-
-        inspector->setVisible (true);
-    };
-
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
-    setSize (400, 300);
+    setResizable(true, true);
+    setSize (600, 500);
 }
 
-PluginEditor::~PluginEditor()
+JucePresetManagerAudioProcessorEditor::~JucePresetManagerAudioProcessorEditor()
 {
 }
 
-void PluginEditor::paint (juce::Graphics& g)
+void JucePresetManagerAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
-
-    auto area = getLocalBounds();
-    g.setColour (juce::Colours::white);
-    g.setFont (16.0f);
-    auto helloWorld = juce::String ("Hello from ") + PRODUCT_NAME_WITHOUT_VERSION + " v" VERSION + " running in " + CMAKE_BUILD_TYPE;
-    g.drawText (helloWorld, area.removeFromTop (150), juce::Justification::centred, false);
 }
 
-void PluginEditor::resized()
+void JucePresetManagerAudioProcessorEditor::resized()
 {
-    // layout the positions of your child components here
-    auto area = getLocalBounds();
-    area.removeFromBottom(50);
-    inspectButton.setBounds (getLocalBounds().withSizeKeepingCentre(100, 50));
+    genericAudioProcessorEditor.setBounds(getLocalBounds()
+        .withSizeKeepingCentre(getLocalBounds().proportionOfWidth(0.9f), getLocalBounds().proportionOfHeight(0.5f)));
+    presetPanel.setBounds(getLocalBounds().removeFromTop(proportionOfHeight(0.1f)));
 }

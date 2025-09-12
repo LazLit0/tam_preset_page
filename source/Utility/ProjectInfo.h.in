@@ -1,0 +1,8 @@
+#pragma once
+
+namespace ProjectInfo
+{
+    const char* const projectName = "${PROJECT_NAME}";
+    const char* const companyName = "${COMPANY_NAME}";
+    const char* const versionString = "${CURRENT_VERSION}";
+}
